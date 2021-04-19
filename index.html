@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NetworkInformation Test</title>
+  <style>
+    .result {
+      margin-top: .5em;
+    }
+
+    tr {
+      text-align: right;
+    }
+
+    td {
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <p>
+    参考链接：
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation">
+      https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation
+    </a>
+  </p>
+  <button id=test>测试</button>
+  <button id=clear>清空</button>
+  <div id=results>
+    <div class="result"></div>
+  </div>
+  <script>
+    test.onclick = function () {
+      var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (!connection) {
+        results.innerHTML = '浏览器不支持';
+        return;
+      }
+      var result = document.createElement('div');
+      result.className = 'result';
+      result.innerHTML = `<table><caption>${this._count ? ++this._count : this._count = 1}</caption><tbody>
+        <tr>
+          <th>downlink
+          <td>${connection.downlink || '-'}
+        <tr>
+          <th>downlinkMax
+          <td>${connection.downlinkMax || '-'}
+        <tr>
+          <th>rtt
+          <td>${connection.rtt || '-'}
+        <tr>
+          <th>saveData
+          <td>${(connection.saveData === true || connection.saveData === false) ? connection.saveData : '-'}
+        <tr>
+          <th>type
+          <td>${connection.effectiveType || connection.type || '-'}
+      `;
+      results.insertBefore(result, document.querySelector('.result'));
+    };
+
+    clear.onclick = function () {
+      test._count = 0;
+      results.innerHTML = '<div class="result"></div>';
+    };
+  </script>
+</body>
+
+</html>
